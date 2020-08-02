@@ -1,4 +1,4 @@
-# TEKNews, A News Application Built in Xcode.
+# TEKNews, A News Application Built in Xcode
 
 This app gets data from the NewsApi -- [https://newsapi.org] and shows the data as a list. 
 
