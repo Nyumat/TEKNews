@@ -10,6 +10,9 @@ import SwiftUI
 import SwiftyJSON
 import SDWebImageSwiftUI
 import WebKit
+import RxSwift
+import UIKit
+
 
 struct ContentView: View {
     
@@ -18,8 +21,9 @@ struct ContentView: View {
     var body: some View {
          
         NavigationView {
-        
             
+            ZStack {
+                
             List(list.dates){ i in
                  
                 NavigationLink(destination:
@@ -56,7 +60,7 @@ struct ContentView: View {
             
         } 
         
-        
+       }
         
     }
 }
@@ -103,17 +107,17 @@ class getApiData : ObservableObject {
             let json = try! JSON(data: data!)
             
             for i in json["articles"]{
-                
-                let title = i.1["title"].stringValue
-                let description = i.1["description"].stringValue
-                let url = i.1["url"].stringValue
-                let image = i.1["urlToImage"].stringValue
-                let id = i.1["publishedAt"].stringValue
+                for j in json["source"] {
+                    let title = i.1["title"].stringValue
+                    let description = i.1["description"].stringValue
+                    let url = i.1["url"].stringValue
+                    let image = i.1["urlToImage"].stringValue
+                    let id = i.1["publishedAt"].stringValue
             
-                DispatchQueue.main.async {
+                    DispatchQueue.main.async {
                     
-                       self.dates.append(dataType(id: id, title: title, desc: description, url: url, image: image))
-                    
+                        self.dates.append(dataType(id: id, title: title, desc: description, url: url, image: image))
+                    }
                 }
             }
             
