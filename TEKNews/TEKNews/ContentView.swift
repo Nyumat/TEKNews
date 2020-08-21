@@ -10,20 +10,14 @@ import SwiftUI
 import SwiftyJSON
 import SDWebImageSwiftUI
 import WebKit
-import RxSwift
-import UIKit
-
 
 struct ContentView: View {
     
     @ObservedObject var list = getApiData()
     
     var body: some View {
-         
-        NavigationView {
-            
-            ZStack {
-                
+        NavigationView{
+      
             List(list.dates){ i in
                  
                 NavigationLink(destination:
@@ -48,6 +42,8 @@ struct ContentView: View {
                             .resizable()
                             .frame(width: 110, height: 135)
                             .cornerRadius(20)
+
+                            
                             
                         }
 
@@ -56,18 +52,29 @@ struct ContentView: View {
                 }
                 
                 
-            }.navigationBarTitle("Top Headlines")
-            
-        } 
+                
+            }.navigationBarTitle("Top US News Stories")
         
-       }
+        
+
+        
+            
+        }
         
     }
-}
+        
+    }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Group {
+            ContentView()
+                .environment(\.colorScheme, .light)
+            ContentView()
+                .environment(\.colorScheme, .dark)
+        }
+        
     }
 }
 
@@ -90,7 +97,7 @@ class getApiData : ObservableObject {
     
     init() {
         
-        let source = "https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=42cfb7a4c2944f05b90422c99a597268"
+        let source = "https://newsapi.org/v2/top-headlines?country=us&apiKey=42cfb7a4c2944f05b90422c99a597268"
         
         let url = URL(string: source)!
         
@@ -107,17 +114,17 @@ class getApiData : ObservableObject {
             let json = try! JSON(data: data!)
             
             for i in json["articles"]{
-                for j in json["source"] {
-                    let title = i.1["title"].stringValue
-                    let description = i.1["description"].stringValue
-                    let url = i.1["url"].stringValue
-                    let image = i.1["urlToImage"].stringValue
-                    let id = i.1["publishedAt"].stringValue
+                
+                let title = i.1["title"].stringValue
+                let description = i.1["description"].stringValue
+                let url = i.1["url"].stringValue
+                let image = i.1["urlToImage"].stringValue
+                let id = i.1["publishedAt"].stringValue
             
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
                     
-                        self.dates.append(dataType(id: id, title: title, desc: description, url: url, image: image))
-                    }
+                       self.dates.append(dataType(id: id, title: title, desc: description, url: url, image: image))
+                    
                 }
             }
             
