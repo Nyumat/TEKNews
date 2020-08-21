@@ -4,7 +4,7 @@ This Native iOS application derives data from the NewsApi -- [https://newsapi.or
 
 ## Demo
 
-![TEKNews](TEKNews.jpg)
+![TEKNews](AppDemo.png)
 
 
 
