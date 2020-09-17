@@ -51,9 +51,20 @@ struct ContentView: View {
                     
                 }
                 
-                
-                
-            }.navigationBarTitle("Top US News Stories")
+            func getCountry(_ country : String)!
+          {
+           var country = getApiData(country : String)                  
+              for country in i.country 
+             {
+                if (i.country == country)
+                {
+                    return country
+                } 
+                 
+              }
+          
+          }
+            }.navigationBarTitle("Top \(country) News Stories")
         
         
 
@@ -86,6 +97,7 @@ struct dataType : Identifiable {
     var desc : String
     var url : String
     var image : String
+    var country : String
     
 }
 
@@ -102,6 +114,8 @@ class getApiData : ObservableObject {
         let url = URL(string: source)!
         
         let session = URLSession(configuration: .default )
+        
+        let country = Country(string: source)!
         
         session.dataTask(with: url)  {  (data,  _,  err) in
             
@@ -120,10 +134,11 @@ class getApiData : ObservableObject {
                 let url = i.1["url"].stringValue
                 let image = i.1["urlToImage"].stringValue
                 let id = i.1["publishedAt"].stringValue
+                let country = i.1["country"].stringValue
             
                 DispatchQueue.main.async {
                     
-                       self.dates.append(dataType(id: id, title: title, desc: description, url: url, image: image))
+                       self.dates.append(dataType(id: id, title: title, desc: description, url: url, image: image, country: country))
                     
                 }
             }
